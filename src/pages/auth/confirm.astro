@@ -17,16 +17,16 @@
         // Obtener parámetros enviados por Supabase
         const params = new URLSearchParams(window.location.search);
         const type = params.get("type");     // Ej: "signup"
-        const token = params.get("token_hash");
+        const token_hash = params.get("token_hash");
 
         // Validación
-        if (!token || !type) {
+        if (!token_hash || !type) {
           console.error("Faltan parámetros en la URL");
           return;
         }
 
         // Redirección a la app móvil usando tu esquema "lumi://"
-        const appUrl = `lumi://auth/callback?type=${type}&token=${token}`;
+        const appUrl = `lumi://auth/callback?type=${type}&token_hash=${token_hash}`;
         
         // Ir a la app
         window.location.href = appUrl;
