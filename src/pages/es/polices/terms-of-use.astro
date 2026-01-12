@@ -1,0 +1,73 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import LanguageSelector from '../../../components/LanguageSelector.astro';
+import Footer from '../../../components/Footer.astro';
+import { getTranslations } from '../../../i18n';
+import "../../../styles/global.css";
+
+const currentLang = 'es';
+const t = getTranslations(currentLang);
+const currentPath = Astro.url.pathname;
+---
+
+<Layout lang={currentLang} title={`${t.termsOfUse.title} - Lumi`}>
+	<main class="min-h-screen flex flex-col justify-start items-center p-6 sm:p-10">
+		<div class="w-full max-w-4xl bg-white rounded-[28px] shadow-[0_20px_60px_rgba(15,30,60,0.1)] px-6 sm:px-12 py-10 flex flex-col gap-6">
+			<div class="flex justify-between items-start">
+				<p class="text-xs sm:text-sm uppercase tracking-[0.3em] text-[#8c8f98]">{t.common.polices}</p>
+				<LanguageSelector currentLang={currentLang} currentPath={currentPath} />
+			</div>
+			<h1 class="text-3xl font-semibold text-[#1c1c1e]">{t.termsOfUse.title}</h1>
+			<p class="text-base text-[#5b5f69] leading-relaxed">
+				{t.termsOfUse.description}
+			</p>
+
+			<section class="flex flex-col gap-8 mt-4">
+				<article class="space-y-3">
+					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.aboutUs.title}</h2>
+					<p class="text-base text-[#5b5f69] leading-relaxed">
+						{t.termsOfUse.aboutUs.content}
+					</p>
+				</article>
+
+				<article class="space-y-3">
+					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.registration.title}</h2>
+					<div class="space-y-4">
+						{t.termsOfUse.registration.content.split('\n\n').map((paragraph: string) => (
+							<p class="text-base text-[#5b5f69] leading-relaxed">{paragraph}</p>
+						))}
+					</div>
+				</article>
+
+				<article class="space-y-3">
+					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.serviceUsage.title}</h2>
+					<p class="text-base text-[#5b5f69] leading-relaxed">
+						{t.termsOfUse.serviceUsage.content}
+					</p>
+				</article>
+
+				<article class="space-y-3">
+					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.content.title}</h2>
+					<p class="text-base text-[#5b5f69] leading-relaxed">
+						{t.termsOfUse.content.content}
+					</p>
+				</article>
+
+				<article class="space-y-3">
+					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.checkInOut.title}</h2>
+					<p class="text-base text-[#5b5f69] leading-relaxed">
+						{t.termsOfUse.checkInOut.content}
+					</p>
+				</article>
+
+				<article class="space-y-3">
+					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.feedback.title}</h2>
+					<p class="text-base text-[#5b5f69] leading-relaxed">
+						{t.termsOfUse.feedback.content}
+					</p>
+				</article>
+			</section>
+		</div>
+	</main>
+	<Footer lang={currentLang} />
+</Layout>
