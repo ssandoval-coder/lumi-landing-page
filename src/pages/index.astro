@@ -1,14 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import "../styles/global.css";
+import { Navbar, Hero, Cards, Plans, Footer } from '../components/Home';
+
 ---
 
 <Layout>
-	<main class="min-h-screen flex items-center justify-center p-8">
-		<section class="text-center bg-white/90 px-10 py-14 rounded-[32px] shadow-[0_25px_70px_rgba(29,44,75,0.15)] space-y-6">
-			<h1 class="text-[3em] text-[#333] mb-2">Lumi</h1>
-			<h2 class="text-[2em] font-light text-[#666]">Próximamente</h2>
-			<p class="text-[1.2em] text-[#888] mt-4">Estamos trabajando en algo increíble</p>
+	<main class="min-h-screen bg-[#f4f0e8]">
+		<Navbar />
+		<Hero />
+		<section class="py-24 bg-white">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+				<h2 class="text-4xl font-extrabold mb-4">Magia para ti y tu bebé</h2>
+				<p class="text-xl text-slate-500 max-w-2xl mx-auto">Lumi crece con tu peque, aprende sus rutinas y te ofrece
+					consejos expertos al instante.</p>
+    		</div>
+			<Cards />
 		</section>
+		<section class="py-24">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
+				<h2 class="text-4xl font-extrabold mb-4">Planes diseñados para ti</h2>
+				<p class="text-xl text-slate-500 max-w-2xl mx-auto">Empieza gratis y desbloquea el máximo potencial cuando lo necesites.</p>
+    		</div>
+			<Plans />
+		</section>
+		<Footer />
 	</main>
 </Layout>
