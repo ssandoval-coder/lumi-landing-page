@@ -17,16 +17,16 @@ const t = getTranslations(lang);
 			<a href={`/${lang}/`} class="flex items-center gap-2">
 				<img src="/favicon.svg" alt="Lumi Logo" class="h-10 w-10" />
 				<span
-					class="text-5xl font-extrabold tracking-tight text-[#D9625E]"
+					class="text-3xl font-extrabold tracking-tight text-[#D9625E] sm:text-5xl"
 					>Lumi</span
 				>
 			</a>
 
 			<div
-				class="hidden items-center space-x-8 font-medium text-[#17233d] md:flex"
+				class="flex items-center gap-2 font-medium text-[#17233d] sm:gap-4"
 			>
 				<button
-					class="inline-flex items-center gap-2 rounded-full bg-[#D9625E] px-6 py-2.5 font-bold text-white transition-all hover:opacity-90 cursor-pointer"
+					class="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-[#D9625E] px-3 py-2 text-xs font-bold text-white transition-all hover:opacity-90 cursor-pointer sm:px-6 sm:py-2.5 sm:text-sm"
 					type="button"
 				>
 					{t.home.navbar.downloadApp}
@@ -36,7 +36,7 @@ const t = getTranslations(lang);
 				<details class="relative">
 					<summary
 						aria-label={t.languageSelector.label}
-						class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full border border-[#d7dce5] bg-white text-[#17233d] transition-colors hover:border-[#D9625E] hover:text-[#D9625E] [&::-webkit-details-marker]:hidden"
+						class="flex h-9 w-9 cursor-pointer list-none items-center justify-center rounded-full border border-[#d7dce5] bg-white text-[#17233d] transition-colors hover:border-[#D9625E] hover:text-[#D9625E] sm:h-10 sm:w-10 [&::-webkit-details-marker]:hidden"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
