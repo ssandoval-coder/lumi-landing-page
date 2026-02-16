@@ -49,7 +49,7 @@ const t = getTranslations(lang);
 		</div>
 
 		<div class="flex justify-center md:justify-end">
-			<div class="relative w-[308px] rounded-[2.2rem] bg-[#1d2b45] p-2.5 shadow-[0_24px_44px_rgba(20,30,50,0.25)]">
+			<div class="phone-float relative w-[308px] rounded-[2.2rem] bg-[#1d2b45] p-2.5 shadow-[0_24px_44px_rgba(20,30,50,0.25)]">
 				<div class="h-[624px] w-[288px] overflow-hidden rounded-[1.8rem] bg-[#faf8f2]">
 					<img
 						src="/image 16.png"
@@ -61,3 +61,20 @@ const t = getTranslations(lang);
 		</div>
 	</div>
 </section>
+
+<style>
+	.phone-float {
+		animation: phoneFloat 2.0s ease-in-out infinite;
+		will-change: transform;
+	}
+
+	@keyframes phoneFloat {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(8px);
+		}
+	}
+</style>
