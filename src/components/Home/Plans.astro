@@ -9,48 +9,43 @@ const { lang = 'es' } = Astro.props;
 const t = getTranslations(lang);
 ---
 
-<div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-    <!-- Basic Plan -->
-    <div
-        class="bg-white p-10 rounded-3xl border-2 border-slate-100 card-shadow"
-    >
-        <h3 class="text-2xl font-bold mb-2">{t.home.plans.basicName}</h3>
-        <p class="text-slate-500 mb-6">{t.home.plans.basicDescription}</p>
-        <div class="text-4xl font-extrabold mb-8">{t.home.plans.basicPrice}</div>
-        <ul class="space-y-4 mb-10 text-left">
-            <li class="flex items-center gap-2">
-                <span class="text-green-500">✓</span> {t.home.plans.basicFeature1}
-            </li>
-            <li class="flex items-center gap-2">
-                <span class="text-green-500">✓</span> {t.home.plans.basicFeature2}
-            </li>
-            <li class="flex items-center gap-2">
-                <span class="text-green-500">✓</span> {t.home.plans.basicFeature3}
-            </li>
-        </ul>
-    </div>
-    <!-- Max Plan -->
-    <div
-        class="bg-[#18202E] text-white p-10 rounded-3xl relative overflow-hidden card-shadow scale-105"
-    >
-        <h3 class="text-2xl font-bold mb-2">{t.home.plans.maxName}</h3>
-        <p class="text-slate-400 mb-6">{t.home.plans.maxDescription}</p>
-        <div class="text-4xl font-extrabold mb-8">
-            $7.99<span class="text-lg font-normal text-slate-400">{t.home.plans.maxPriceUnit}</span>
-        </div>
-        <ul class="space-y-4 mb-10 text-left">
-            <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature1}
-            </li>
-            <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature2}
-            </li>
-            <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature3}
-            </li>
-            <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature4}
-            </li>
-        </ul>
-    </div>
+<div class="mx-auto grid w-full max-w-4xl place-items-center gap-5 px-4 md:grid-cols-2 md:place-items-stretch md:gap-8 md:px-0">
+	<div class="w-full max-w-[330px] rounded-3xl border-2 border-slate-100 bg-white p-6 card-shadow md:max-w-none md:p-10">
+		<h3 class="mb-2 text-xl font-bold md:text-2xl">{t.home.plans.basicName}</h3>
+		<p class="mb-5 text-sm text-slate-500 md:mb-6 md:text-base">{t.home.plans.basicDescription}</p>
+		<div class="mb-7 text-3xl font-extrabold md:mb-8 md:text-4xl">{t.home.plans.basicPrice}</div>
+		<ul class="mb-8 space-y-3 text-left text-sm md:mb-10 md:space-y-4 md:text-base">
+			<li class="flex items-center gap-2">
+				<span class="text-green-500">&#10003;</span> {t.home.plans.basicFeature1}
+			</li>
+			<li class="flex items-center gap-2">
+				<span class="text-green-500">&#10003;</span> {t.home.plans.basicFeature2}
+			</li>
+			<li class="flex items-center gap-2">
+				<span class="text-green-500">&#10003;</span> {t.home.plans.basicFeature3}
+			</li>
+		</ul>
+	</div>
+
+	<div class="relative w-full max-w-[330px] overflow-hidden rounded-3xl bg-[#18202E] p-6 text-white card-shadow md:max-w-none md:scale-105 md:p-10">
+		<h3 class="mb-2 text-xl font-bold md:text-2xl">{t.home.plans.maxName}</h3>
+		<p class="mb-5 text-sm text-slate-400 md:mb-6 md:text-base">{t.home.plans.maxDescription}</p>
+		<div class="mb-7 text-3xl font-extrabold md:mb-8 md:text-4xl">
+			$7.99<span class="text-base font-normal text-slate-400 md:text-lg">{t.home.plans.maxPriceUnit}</span>
+		</div>
+		<ul class="mb-8 space-y-3 text-left text-sm md:mb-10 md:space-y-4 md:text-base">
+			<li class="flex items-center gap-2">
+				<span class="font-bold text-[#D9625E]">&#10003;</span> {t.home.plans.maxFeature1}
+			</li>
+			<li class="flex items-center gap-2">
+				<span class="font-bold text-[#D9625E]">&#10003;</span> {t.home.plans.maxFeature2}
+			</li>
+			<li class="flex items-center gap-2">
+				<span class="font-bold text-[#D9625E]">&#10003;</span> {t.home.plans.maxFeature3}
+			</li>
+			<li class="flex items-center gap-2">
+				<span class="font-bold text-[#D9625E]">&#10003;</span> {t.home.plans.maxFeature4}
+			</li>
+		</ul>
+	</div>
 </div>
