@@ -1,9 +1,12 @@
 ---
+import { getTranslations, type Language } from '../../i18n';
+
 interface Props {
-    lang?: string;
+    lang?: Language;
 }
 
-const { lang = "es" } = Astro.props;
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
 const currentYear = new Date().getFullYear();
 ---
 
@@ -22,13 +25,13 @@ const currentYear = new Date().getFullYear();
                     >
                 </div>
                 <p class="text-slate-500 max-w-sm mb-8">
-                    Crianza con claridad
+                    {t.home.footer.slogan}
                 </p>
                 <div class="flex gap-4">
                     <a
                         class="w-10 h-10 bg-white rounded-full flex items-center justify-center  hover:border-lumi-coral text-slate-400 hover:text-lumi-coral transition-all"
                         href="https://www.tiktok.com/es-419/"><img src="/tiktok-brands-solid.png" alt="tiktok-logo" class="w-8 h-8"></a
-                        
+
                     >
                     <a
                         class="w-10 h-10 bg-white rounded-full flex items-center justify-center  hover:border-lumi-coral text-slate-400 hover:text-lumi-coral transition-all"
@@ -37,20 +40,20 @@ const currentYear = new Date().getFullYear();
                 </div>
             </div>
             <div>
-                <h4 class="font-bold mb-6">Compañía</h4>
+                <h4 class="font-bold mb-6">{t.home.footer.company}</h4>
                 <ul class="space-y-4 text-slate-500">
                     <li>
                         <a class="hover:text-lumi-coral" href="#"
-                            >Sobre nosotros</a>
+                            >{t.home.footer.aboutUs}</a>
                     </li>
                     <li>
-                        <a class="hover:text-lumi-coral" href="#">Contacto</a>
+                        <a class="hover:text-lumi-coral" href="#">{t.home.footer.contact}</a>
                     </li>
                     <li>
-                        <a class="hover:text-lumi-coral" href="/polices/terms-of-use">Privacidad</a>
+                        <a class="hover:text-lumi-coral" href={`/${lang}/polices/terms-of-use`}>{t.home.footer.privacy}</a>
                     </li>
                     <li>
-                        <a class="hover:text-lumi-coral" href="#">Términos</a>
+                        <a class="hover:text-lumi-coral" href="#">{t.home.footer.terms}</a>
                     </li>
                 </ul>
             </div>
@@ -58,7 +61,7 @@ const currentYear = new Date().getFullYear();
         <div
             class="border-t border-slate-200 pt-8 flex flex-col md:row justify-between items-center text-sm text-slate-400"
         >
-            <p>© {currentYear} Bempresente. Todos los derechos reservados.</p>
+            <p>&copy; {currentYear} {t.home.footer.copyright}</p>
         </div>
     </div>
 </footer>

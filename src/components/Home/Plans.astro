@@ -1,20 +1,31 @@
+---
+import { getTranslations, type Language } from '../../i18n';
+
+interface Props {
+	lang?: Language;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+---
+
 <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
     <!-- Basic Plan -->
     <div
         class="bg-white p-10 rounded-3xl border-2 border-slate-100 card-shadow"
     >
-        <h3 class="text-2xl font-bold mb-2">Lumi Basic</h3>
-        <p class="text-slate-500 mb-6">Para empezar con buen pie</p>
-        <div class="text-4xl font-extrabold mb-8">Gratis</div>
+        <h3 class="text-2xl font-bold mb-2">{t.home.plans.basicName}</h3>
+        <p class="text-slate-500 mb-6">{t.home.plans.basicDescription}</p>
+        <div class="text-4xl font-extrabold mb-8">{t.home.plans.basicPrice}</div>
         <ul class="space-y-4 mb-10 text-left">
             <li class="flex items-center gap-2">
-                <span class="text-green-500">✓</span> Seguimiento básico diario
+                <span class="text-green-500">✓</span> {t.home.plans.basicFeature1}
             </li>
             <li class="flex items-center gap-2">
-                <span class="text-green-500">✓</span> Consejos semanales
+                <span class="text-green-500">✓</span> {t.home.plans.basicFeature2}
             </li>
             <li class="flex items-center gap-2">
-                <span class="text-green-500">✓</span> Perfil de un bebé
+                <span class="text-green-500">✓</span> {t.home.plans.basicFeature3}
             </li>
         </ul>
     </div>
@@ -22,25 +33,23 @@
     <div
         class="bg-[#18202E] text-white p-10 rounded-3xl relative overflow-hidden card-shadow scale-105"
     >
-        <h3 class="text-2xl font-bold mb-2">Lumi Max</h3>
-        <p class="text-slate-400 mb-6">Crianza sin límites</p>
+        <h3 class="text-2xl font-bold mb-2">{t.home.plans.maxName}</h3>
+        <p class="text-slate-400 mb-6">{t.home.plans.maxDescription}</p>
         <div class="text-4xl font-extrabold mb-8">
-            $7.99<span class="text-lg font-normal text-slate-400">/mes</span>
+            $7.99<span class="text-lg font-normal text-slate-400">{t.home.plans.maxPriceUnit}</span>
         </div>
         <ul class="space-y-4 mb-10 text-left">
             <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> Chat IA Ilimitado
-                24/7
+                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature1}
             </li>
             <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> Mejores modelos
+                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature2}
             </li>
             <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> Exportar perfil
+                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature3}
             </li>
             <li class="flex items-center gap-2">
-                <span class="text-[#D9625E] font-bold">✓</span> Multiperfil para
-                hermanos
+                <span class="text-[#D9625E] font-bold">✓</span> {t.home.plans.maxFeature4}
             </li>
         </ul>
     </div>

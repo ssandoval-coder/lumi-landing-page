@@ -1,0 +1,31 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import "../../styles/global.css";
+import { Navbar, Hero, Cards, Plans, Footer } from '../../components/Home';
+import { getTranslations } from '../../i18n';
+
+const lang = 'pt';
+const t = getTranslations(lang);
+---
+
+<Layout lang={lang}>
+	<main class="min-h-screen bg-[#f4f0e8]">
+		<Navbar lang={lang} />
+		<Hero lang={lang} />
+		<section class="py-24 bg-white">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+				<h2 class="text-4xl font-extrabold mb-4">{t.home.features.title}</h2>
+				<p class="text-xl text-slate-500 max-w-2xl mx-auto">{t.home.features.subtitle}</p>
+    		</div>
+			<Cards lang={lang} />
+		</section>
+		<section class="py-24">
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
+				<h2 class="text-4xl font-extrabold mb-4">{t.home.plans.title}</h2>
+				<p class="text-xl text-slate-500 max-w-2xl mx-auto">{t.home.plans.subtitle}</p>
+    		</div>
+			<Plans lang={lang} />
+		</section>
+		<Footer lang={lang} />
+	</main>
+</Layout>

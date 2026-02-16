@@ -1,14 +1,24 @@
+---
+import { getTranslations, type Language } from '../../i18n';
+
+interface Props {
+	lang?: Language;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+---
+
 <section class="w-full bg-[#f4f0e8] pt-28 pb-14">
 	<div class="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-12 px-6 md:grid-cols-2">
 		<div class="space-y-7">
 			<h1 class="text-5xl font-extrabold leading-[0.98] tracking-tight text-[#17233d] md:text-7xl">
-				Crianza con
-				<span class="block text-[#d9625e]">claridad</span>
+				{t.home.hero.titleLine1}
+				<span class="block text-[#d9625e]">{t.home.hero.titleLine2}</span>
 			</h1>
 
 			<p class="max-w-xl text-xl leading-relaxed text-[#4a5a72]">
-				Tu companero inteligente que entiende el ritmo de tu bebe. Obtén respuestas expertas y
-				rutinas personalizadas al instante.
+				{t.home.hero.subtitle}
 			</p>
 
 			<div class="flex flex-wrap items-center gap-4">

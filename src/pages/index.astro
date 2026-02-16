@@ -1,29 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import "../styles/global.css";
-import { Navbar, Hero, Cards, Plans, Footer } from '../components/Home';
-
 ---
 
 <Layout>
-	<main class="min-h-screen bg-[#f4f0e8]">
-		<Navbar />
-		<Hero />
-		<section class="py-24 bg-white">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-				<h2 class="text-4xl font-extrabold mb-4">Magia para ti y tu bebé</h2>
-				<p class="text-xl text-slate-500 max-w-2xl mx-auto">Lumi crece con tu peque, aprende sus rutinas y te ofrece
-					consejos expertos al instante.</p>
-    		</div>
-			<Cards />
-		</section>
-		<section class="py-24">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10">
-				<h2 class="text-4xl font-extrabold mb-4">Planes diseñados para ti</h2>
-				<p class="text-xl text-slate-500 max-w-2xl mx-auto">Empieza gratis y desbloquea el máximo potencial cuando lo necesites.</p>
-    		</div>
-			<Plans />
-		</section>
-		<Footer />
-	</main>
+	<script is:inline>
+		const supported = ['es', 'en', 'pt'];
+		const browserLang = (navigator.language || navigator.languages[0] || 'es').substring(0, 2).toLowerCase();
+		const lang = supported.includes(browserLang) ? browserLang : 'es';
+		window.location.replace('/' + lang + '/');
+	</script>
 </Layout>

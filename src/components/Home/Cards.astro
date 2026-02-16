@@ -1,3 +1,14 @@
+---
+import { getTranslations, type Language } from '../../i18n';
+
+interface Props {
+	lang?: Language;
+}
+
+const { lang = 'es' } = Astro.props;
+const t = getTranslations(lang);
+---
+
 <div
     class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-8"
 >
@@ -10,9 +21,9 @@
         >
             <span class="text-2xl">✨</span>
         </div>
-        <h3 class="text-xl font-bold mb-3">Rutinas Dinámicas</h3>
+        <h3 class="text-xl font-bold mb-3">{t.home.features.card1Title}</h3>
         <p class="text-slate-600">
-            Planifica el día de tu bebé adaptado a sus fases de desarrollo.
+            {t.home.features.card1Description}
         </p>
     </div>
     <!-- Feature 2 -->
@@ -24,9 +35,9 @@
         >
             <span class="text-2xl">🤖</span>
         </div>
-        <h3 class="text-xl font-bold mb-3">Asistente IA 24/7</h3>
+        <h3 class="text-xl font-bold mb-3">{t.home.features.card2Title}</h3>
         <p class="text-slate-600">
-            Resuelve dudas sobre sueño, alimentación y hitos en segundos.
+            {t.home.features.card2Description}
         </p>
     </div>
     <!-- Feature 3 -->
@@ -38,11 +49,9 @@
         >
             <span class="text-2xl">❤️</span>
         </div>
-        <h3 class="text-xl font-bold mb-3">Favoritos</h3>
+        <h3 class="text-xl font-bold mb-3">{t.home.features.card3Title}</h3>
         <p class="text-slate-600">
-            Guarda los mensajes de lumi 
-            para nunca perderte lo que 
-            quieres
+            {t.home.features.card3Description}
         </p>
     </div>
     <!-- Feature 4 -->
@@ -54,9 +63,9 @@
         >
             <span class="text-2xl">📈</span>
         </div>
-        <h3 class="text-xl font-bold mb-3">Seguimiento Hitos</h3>
+        <h3 class="text-xl font-bold mb-3">{t.home.features.card4Title}</h3>
         <p class="text-slate-600">
-            No te pierdas ni un detalle de su crecimiento y logros.
+            {t.home.features.card4Description}
         </p>
     </div>
 </div>
