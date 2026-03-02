@@ -1,4 +1,4 @@
-export const translations = {
+﻿export const translations = {
     common: {
         polices: 'Políticas',
         android: 'Android',
@@ -55,7 +55,7 @@ export const translations = {
         hero: {
             titleLine1: 'Crianza con',
             titleLine2: 'claridad',
-            subtitle: 'Tu companero inteligente que entiende el ritmo de tu bebe. Obtén respuestas expertas y rutinas personalizadas al instante.',
+            subtitle: 'Tu compañero inteligente que entiende el ritmo de tu bebé. Obtén respuestas expertas y rutinas personalizadas al instante.',
         },
         features: {
             title: 'Magia para ti y tu bebé',
@@ -65,7 +65,7 @@ export const translations = {
             card2Title: 'Asistente IA 24/7',
             card2Description: 'Resuelve dudas sobre sueño, alimentación y hitos en segundos.',
             card3Title: 'Favoritos',
-            card3Description: 'Guarda los mensajes de lumi para nunca perderte lo que quieres',
+            card3Description: 'Guarda los mensajes de Lumi para nunca perderte lo que quieres',
             card4Title: 'Seguimiento Hitos',
             card4Description: 'No te pierdas ni un detalle de su crecimiento y logros.',
         },
@@ -91,6 +91,7 @@ export const translations = {
             company: 'Compañía',
             aboutUs: 'Sobre nosotros',
             contact: 'Contacto',
+            help: 'Centro de ayuda',
             privacy: 'Privacidad',
             terms: 'Términos',
             copyright: 'Bempresente. Todos los derechos reservados.',

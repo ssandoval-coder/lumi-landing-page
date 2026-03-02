@@ -14,13 +14,14 @@ const currentYear = new Date().getFullYear();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-3 gap-12 mb-16">
             <div class="col-span-2">
-                <div class="flex items-center gap-2 mb-6">
+                <div class="flex items-center gap-2 mb-6"
+                >
                     <img
                         alt="Lumi Logo"
                         class="h-8 w-8"
                         src="/Estrela_D9625E.png"
                     />
-                    <span class="text-3xl font-extrabold tracking-tight text-[#D9625E]"
+                    <span class="text-3xl font-extrabold tracking-tight text-[#D9625E]" 
                         >Lumi</span
                     >
                 </div>
@@ -43,17 +44,13 @@ const currentYear = new Date().getFullYear();
                 <h4 class="font-bold mb-6">{t.home.footer.company}</h4>
                 <ul class="space-y-4 text-slate-500">
                     <li>
-                        <a class="hover:text-lumi-coral" href="#"
-                            >{t.home.footer.aboutUs}</a>
+                        <a class="hover:text-lumi-coral" href={`/${lang}/polices/center-of-help`}>{t.home.footer.help}</a>
                     </li>
                     <li>
-                        <a class="hover:text-lumi-coral" href="#">{t.home.footer.contact}</a>
+                        <a class="hover:text-lumi-coral" href={`/${lang}/polices/privacy-policy`}>{t.home.footer.privacy}</a>
                     </li>
                     <li>
-                        <a class="hover:text-lumi-coral" href={`/${lang}/polices/terms-of-use`}>{t.home.footer.privacy}</a>
-                    </li>
-                    <li>
-                        <a class="hover:text-lumi-coral" href="#">{t.home.footer.terms}</a>
+                        <a class="hover:text-lumi-coral" href={`/${lang}/polices/terms-of-use`}>{t.home.footer.terms}</a>
                     </li>
                 </ul>
             </div>

@@ -93,6 +93,7 @@ export const translations: Translations = {
             company: 'Company',
             aboutUs: 'About us',
             contact: 'Contact',
+            help: 'Help Center',
             privacy: 'Privacy',
             terms: 'Terms',
             copyright: 'Bempresente. All rights reserved.',

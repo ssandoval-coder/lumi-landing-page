@@ -92,10 +92,11 @@ export const translations: Translations = {
             slogan: 'Criação com clareza',
             company: 'Empresa',
             aboutUs: 'Sobre nós',
-            contact: 'Contato',
+                        help: 'Centro de Ajuda',
             privacy: 'Privacidade',
             terms: 'Termos',
             copyright: 'Bempresente. Todos os direitos reservados.',
         },
     }
 };
+
