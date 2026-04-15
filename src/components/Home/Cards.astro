@@ -7,65 +7,71 @@ interface Props {
 
 const { lang = 'es' } = Astro.props;
 const t = getTranslations(lang);
+
+const cards = [
+	{
+		titleKey: 'card1Title' as const,
+		descKey: 'card1Description' as const,
+		accent: '#D9625E',
+		icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+			<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+			<line x1="16" y1="2" x2="16" y2="6"/>
+			<line x1="8" y1="2" x2="8" y2="6"/>
+			<line x1="3" y1="10" x2="21" y2="10"/>
+			<path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+		</svg>`,
+	},
+	{
+		titleKey: 'card2Title' as const,
+		descKey: 'card2Description' as const,
+		accent: '#7BA5F2',
+		icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M12 2a4 4 0 0 1 4 4c0 1.5-.7 2.8-1.7 3.7L16 22H8l1.7-12.3A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/>
+			<path d="M9 12h6"/>
+		</svg>`,
+	},
+	{
+		titleKey: 'card3Title' as const,
+		descKey: 'card3Description' as const,
+		accent: '#D9625E',
+		icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+		</svg>`,
+	},
+	{
+		titleKey: 'card4Title' as const,
+		descKey: 'card4Description' as const,
+		accent: '#7BA5F2',
+		icon: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+			<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+		</svg>`,
+	},
+];
 ---
 
-<div
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-8"
->
-    <!-- Feature 1 -->
-    <div
-        class="p-8 rounded-3xl bg-rose-50 border-b-4 border-[#D9625E] card-shadow transition-transform hover:-translate-y-2"
-    >
-        <div
-            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm"
-        >
-            <span class="text-2xl">✨</span>
-        </div>
-        <h3 class="text-xl font-bold mb-3">{t.home.features.card1Title}</h3>
-        <p class="text-slate-600">
-            {t.home.features.card1Description}
-        </p>
-    </div>
-    <!-- Feature 2 -->
-    <div
-        class="p-8 rounded-3xl bg-blue-50 border-b-4 border-[#7BA5F2] card-shadow transition-transform hover:-translate-y-2"
-    >
-        <div
-            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm"
-        >
-            <span class="text-2xl">🤖</span>
-        </div>
-        <h3 class="text-xl font-bold mb-3">{t.home.features.card2Title}</h3>
-        <p class="text-slate-600">
-            {t.home.features.card2Description}
-        </p>
-    </div>
-    <!-- Feature 3 -->
-    <div
-        class="p-8 rounded-3xl bg-rose-50 border-b-4 border-[#D9625E] card-shadow transition-transform hover:-translate-y-2"
-    >
-        <div
-            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm"
-        >
-            <span class="text-2xl">❤️</span>
-        </div>
-        <h3 class="text-xl font-bold mb-3">{t.home.features.card3Title}</h3>
-        <p class="text-slate-600">
-            {t.home.features.card3Description}
-        </p>
-    </div>
-    <!-- Feature 4 -->
-    <div
-        class="p-8 rounded-3xl bg-blue-50 border-b-4 border-[#7BA5F2] card-shadow transition-transform hover:-translate-y-2"
-    >
-        <div
-            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm"
-        >
-            <span class="text-2xl">📈</span>
-        </div>
-        <h3 class="text-xl font-bold mb-3">{t.home.features.card4Title}</h3>
-        <p class="text-slate-600">
-            {t.home.features.card4Description}
-        </p>
-    </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+	{cards.map((card) => (
+		<div class="feature-card group relative flex flex-col gap-5 rounded-2xl border border-slate-100 bg-white p-7 transition-all duration-300 hover:-translate-y-1.5">
+			<div
+				class="icon-wrap w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300"
+				style={`background: ${card.accent}18; color: ${card.accent};`}
+			>
+				<Fragment set:html={card.icon} />
+			</div>
+			<div>
+				<h3 class="text-base font-bold text-[#17233d] mb-2">{t.home.features[card.titleKey]}</h3>
+				<p class="text-sm leading-relaxed text-slate-500">{t.home.features[card.descKey]}</p>
+			</div>
+			<div class="card-accent-line absolute bottom-0 left-6 right-6 h-0.5 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100" style={`background: ${card.accent};`}></div>
+		</div>
+	))}
 </div>
+
+<style>
+	.feature-card {
+		box-shadow: 0 1px 4px rgba(23, 35, 61, 0.06), 0 4px 16px rgba(23, 35, 61, 0.04);
+	}
+	.feature-card:hover {
+		box-shadow: 0 4px 20px rgba(23, 35, 61, 0.1), 0 1px 4px rgba(23, 35, 61, 0.06);
+	}
+</style>
