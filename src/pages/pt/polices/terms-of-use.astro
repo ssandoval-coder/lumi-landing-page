@@ -8,6 +8,21 @@ import "../../../styles/global.css";
 const currentLang = 'pt';
 const t = getTranslations(currentLang);
 const currentPath = Astro.url.pathname;
+
+const sections = [
+	t.termsOfUse.aboutUs,
+	t.termsOfUse.registration,
+	t.termsOfUse.serviceDescription,
+	t.termsOfUse.subscriptions,
+	t.termsOfUse.aiDisclaimer,
+	t.termsOfUse.userObligations,
+	t.termsOfUse.intellectualProperty,
+	t.termsOfUse.feedback,
+	t.termsOfUse.termination,
+	t.termsOfUse.liability,
+	t.termsOfUse.modifications,
+	t.termsOfUse.contact,
+];
 ---
 
 <Layout lang={currentLang} title={`${t.termsOfUse.title} - Lumi`}>
@@ -17,55 +32,25 @@ const currentPath = Astro.url.pathname;
 				<p class="text-xs sm:text-sm uppercase tracking-[0.3em] text-[#8c8f98]">{t.common.polices}</p>
 				<LanguageSelector currentLang={currentLang} currentPath={currentPath} />
 			</div>
-			<h1 class="text-3xl font-semibold text-[#1c1c1e]">{t.termsOfUse.title}</h1>
+			<div>
+				<h1 class="text-3xl font-semibold text-[#1c1c1e]">{t.termsOfUse.title}</h1>
+				<p class="text-xs text-[#8c8f98] mt-1">{t.termsOfUse.lastUpdated}</p>
+			</div>
 			<p class="text-base text-[#5b5f69] leading-relaxed">
 				{t.termsOfUse.description}
 			</p>
 
 			<section class="flex flex-col gap-8 mt-4">
-				<article class="space-y-3">
-					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.aboutUs.title}</h2>
-					<p class="text-base text-[#5b5f69] leading-relaxed">
-						{t.termsOfUse.aboutUs.content}
-					</p>
-				</article>
-
-				<article class="space-y-3">
-					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.registration.title}</h2>
-					<div class="space-y-4">
-						{t.termsOfUse.registration.content.split('\n\n').map((paragraph: string) => (
-							<p class="text-base text-[#5b5f69] leading-relaxed">{paragraph}</p>
-						))}
-					</div>
-				</article>
-
-				<article class="space-y-3">
-					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.serviceUsage.title}</h2>
-					<p class="text-base text-[#5b5f69] leading-relaxed">
-						{t.termsOfUse.serviceUsage.content}
-					</p>
-				</article>
-
-				<article class="space-y-3">
-					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.content.title}</h2>
-					<p class="text-base text-[#5b5f69] leading-relaxed">
-						{t.termsOfUse.content.content}
-					</p>
-				</article>
-
-				<article class="space-y-3">
-					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.checkInOut.title}</h2>
-					<p class="text-base text-[#5b5f69] leading-relaxed">
-						{t.termsOfUse.checkInOut.content}
-					</p>
-				</article>
-
-				<article class="space-y-3">
-					<h2 class="text-2xl font-semibold text-[#1c1c1e]">{t.termsOfUse.feedback.title}</h2>
-					<p class="text-base text-[#5b5f69] leading-relaxed">
-						{t.termsOfUse.feedback.content}
-					</p>
-				</article>
+				{sections.map((section) => (
+					<article class="space-y-3">
+						<h2 class="text-2xl font-semibold text-[#1c1c1e]">{section.title}</h2>
+						<div class="space-y-4">
+							{section.content.split('\n\n').map((paragraph: string) => (
+								<p class="text-base text-[#5b5f69] leading-relaxed">{paragraph}</p>
+							))}
+						</div>
+					</article>
+				))}
 			</section>
 		</div>
 	</main>

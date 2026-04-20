@@ -8,6 +8,23 @@ import "../../../styles/global.css";
 const currentLang = 'en';
 const t = getTranslations(currentLang);
 const currentPath = Astro.url.pathname;
+
+const sections = [
+	t.privacyPolicy.introduction,
+	t.privacyPolicy.dataController,
+	t.privacyPolicy.dataCollected,
+	t.privacyPolicy.howWeUse,
+	t.privacyPolicy.sensitiveData,
+	t.privacyPolicy.aiUsage,
+	t.privacyPolicy.thirdParties,
+	t.privacyPolicy.retention,
+	t.privacyPolicy.security,
+	t.privacyPolicy.userRights,
+	t.privacyPolicy.childrenPrivacy,
+	t.privacyPolicy.internationalTransfers,
+	t.privacyPolicy.changes,
+	t.privacyPolicy.contact,
+];
 ---
 
 <Layout lang={currentLang} title={`${t.privacyPolicy.title} - Lumi`}>
@@ -17,24 +34,25 @@ const currentPath = Astro.url.pathname;
 				<p class="text-xs sm:text-sm uppercase tracking-[0.3em] text-[#8c8f98]">{t.common.polices}</p>
 				<LanguageSelector currentLang={currentLang} currentPath={currentPath} />
 			</div>
-			<h1 class="text-3xl font-semibold text-[#1c1c1e]">{t.privacyPolicy.title}</h1>
+			<div>
+				<h1 class="text-3xl font-semibold text-[#1c1c1e]">{t.privacyPolicy.title}</h1>
+				<p class="text-xs text-[#8c8f98] mt-1">{t.privacyPolicy.lastUpdated}</p>
+			</div>
 			<p class="text-base text-[#5b5f69] leading-relaxed">
 				{t.privacyPolicy.description}
 			</p>
 
-			<section class="grid gap-6 sm:grid-cols-2">
-				<article class="border border-[#eef0f5] rounded-2xl p-6 bg-[#fafbff] space-y-2">
-					<h2 class="text-xl font-semibold text-[#1c1c1e]">{t.common.android}</h2>
-					<p class="text-[#6d717e]">
-						{t.privacyPolicy.androidDescription}
-					</p>
-				</article>
-				<article class="border border-[#eef0f5] rounded-2xl p-6 bg-[#fafbff] space-y-2">
-					<h2 class="text-xl font-semibold text-[#1c1c1e]">{t.common.ios}</h2>
-					<p class="text-[#6d717e]">
-						{t.privacyPolicy.iosDescription}
-					</p>
-				</article>
+			<section class="flex flex-col gap-8 mt-4">
+				{sections.map((section) => (
+					<article class="space-y-3">
+						<h2 class="text-2xl font-semibold text-[#1c1c1e]">{section.title}</h2>
+						<div class="space-y-4">
+							{section.content.split('\n\n').map((paragraph: string) => (
+								<p class="text-base text-[#5b5f69] leading-relaxed">{paragraph}</p>
+							))}
+						</div>
+					</article>
+				))}
 			</section>
 		</div>
 	</main>
