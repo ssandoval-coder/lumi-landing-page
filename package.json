@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@iconify-json/mdi": "^1.2.3",
+    "@supabase/supabase-js": "2.105.0",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.9",
     "astro-icon": "^1.1.5",

@@ -1,0 +1,299 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout lang="es" title="Conectar Lumi con ChatGPT">
+  <main class="oauth-shell">
+    <section class="oauth-card" aria-labelledby="oauth-title">
+      <div class="brand">Lumi</div>
+      <h1 id="oauth-title">Conectar Lumi con ChatGPT</h1>
+      <p id="status" class="status" role="status">Preparando autorización…</p>
+
+      <form id="login-form" class="stack" hidden>
+        <p>Inicia sesión con tu cuenta Lumi para continuar.</p>
+        <label>
+          Correo electrónico
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </label>
+        <label>
+          Contraseña
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </label>
+        <button type="submit">Iniciar sesión</button>
+      </form>
+
+      <div id="consent" class="stack" hidden>
+        <p><strong id="client-name">ChatGPT</strong> solicita acceso de solo lectura.</p>
+        <div class="permission">
+          <strong>Permisos solicitados</strong>
+          <ul id="scope-list"></ul>
+        </div>
+        <p class="privacy-note">
+          ChatGPT no recibirá contraseñas, identificadores internos ni el perfil completo
+          de tus bebés. Puedes revocar el acceso posteriormente.
+        </p>
+        <div class="actions">
+          <button id="deny" class="secondary" type="button">Cancelar</button>
+          <button id="approve" type="button">Permitir acceso</button>
+        </div>
+      </div>
+
+      <p id="error" class="error" role="alert" hidden></p>
+      <a class="privacy-link" href="/es/polices/privacy-policy">Política de privacidad</a>
+    </section>
+  </main>
+
+  <script>
+    import { createClient } from '@supabase/supabase-js';
+
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    const authorizationId = new URLSearchParams(window.location.search).get('authorization_id');
+
+    const status = document.querySelector('#status');
+    const errorBox = document.querySelector('#error');
+    const loginForm = document.querySelector('#login-form');
+    const consent = document.querySelector('#consent');
+    const clientName = document.querySelector('#client-name');
+    const scopeList = document.querySelector('#scope-list');
+    const approveButton = document.querySelector('#approve');
+    const denyButton = document.querySelector('#deny');
+
+    const showError = (message) => {
+      errorBox.textContent = message;
+      errorBox.hidden = false;
+      status.textContent = '';
+    };
+
+    if (!supabaseUrl || !supabaseAnonKey || !authorizationId) {
+      showError('La solicitud de autorización no es válida o el entorno no está configurado.');
+    } else {
+      const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+      });
+
+      const redirect = (data) => {
+        if (!data?.redirect_url) throw new Error('OAuth redirect missing');
+        window.location.assign(data.redirect_url);
+      };
+
+      const loadAuthorization = async () => {
+        errorBox.hidden = true;
+        status.textContent = 'Verificando tu cuenta Lumi…';
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+          status.textContent = '';
+          loginForm.hidden = false;
+          consent.hidden = true;
+          return;
+        }
+
+        loginForm.hidden = true;
+        const { data, error } = await supabase.auth.oauth.getAuthorizationDetails(authorizationId);
+        if (error || !data) {
+          showError('No fue posible verificar la solicitud. Intenta conectar Lumi nuevamente desde ChatGPT.');
+          return;
+        }
+        if ('redirect_url' in data) {
+          redirect(data);
+          return;
+        }
+
+        clientName.textContent = data.client?.name || 'ChatGPT';
+        scopeList.replaceChildren();
+        const labels = {
+          openid: 'Confirmar tu identidad Lumi',
+          profile: 'Consultar información básica de tu cuenta',
+          email: 'Consultar el correo asociado a tu cuenta',
+        };
+        for (const scope of data.scope.split(' ').filter(Boolean)) {
+          const item = document.createElement('li');
+          item.textContent = labels[scope] || scope;
+          scopeList.appendChild(item);
+        }
+        status.textContent = '';
+        consent.hidden = false;
+      };
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        errorBox.hidden = true;
+        status.textContent = 'Iniciando sesión…';
+        const form = new FormData(loginForm);
+        const { error } = await supabase.auth.signInWithPassword({
+          email: String(form.get('email') || ''),
+          password: String(form.get('password') || ''),
+        });
+        if (error) {
+          showError('No pudimos iniciar sesión. Revisa tus credenciales.');
+          return;
+        }
+        await loadAuthorization();
+      });
+
+      approveButton.addEventListener('click', async () => {
+        approveButton.disabled = true;
+        denyButton.disabled = true;
+        status.textContent = 'Conectando Lumi…';
+        const { data, error } = await supabase.auth.oauth.approveAuthorization(
+          authorizationId,
+          { skipBrowserRedirect: true },
+        );
+        if (error || !data) {
+          approveButton.disabled = false;
+          denyButton.disabled = false;
+          showError('No fue posible completar la autorización.');
+          return;
+        }
+        redirect(data);
+      });
+
+      denyButton.addEventListener('click', async () => {
+        approveButton.disabled = true;
+        denyButton.disabled = true;
+        status.textContent = 'Cancelando…';
+        const { data, error } = await supabase.auth.oauth.denyAuthorization(
+          authorizationId,
+          { skipBrowserRedirect: true },
+        );
+        if (error || !data) {
+          approveButton.disabled = false;
+          denyButton.disabled = false;
+          showError('No fue posible cancelar la autorización.');
+          return;
+        }
+        redirect(data);
+      });
+
+      loadAuthorization().catch(() => {
+        showError('No fue posible preparar la autorización.');
+      });
+    }
+  </script>
+</Layout>
+
+<style>
+  :global(body) {
+    background: #f4f1ea;
+    color: #26362f;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  }
+
+  .oauth-shell {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+
+  .oauth-card {
+    width: min(100%, 460px);
+    background: #fffdf8;
+    border: 1px solid #d8d3c8;
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgb(38 54 47 / 12%);
+  }
+
+  .brand {
+    color: #3d715d;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 10px 0 8px;
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    line-height: 1.08;
+  }
+
+  .status,
+  .privacy-note {
+    color: #5f6c66;
+  }
+
+  .stack {
+    display: grid;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  label {
+    display: grid;
+    gap: 7px;
+    font-weight: 650;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #b9c2bd;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: white;
+    color: inherit;
+    font: inherit;
+  }
+
+  button {
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: #356a55;
+    color: white;
+    font: inherit;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: wait;
+    opacity: 0.55;
+  }
+
+  button.secondary {
+    background: #e7e4dc;
+    color: #26362f;
+  }
+
+  .permission {
+    padding: 16px;
+    border-radius: 16px;
+    background: #eef4ef;
+  }
+
+  .permission ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .error {
+    color: #912c2c;
+    background: #fcecec;
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .privacy-link {
+    display: inline-block;
+    margin-top: 24px;
+    color: #356a55;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+</style>
