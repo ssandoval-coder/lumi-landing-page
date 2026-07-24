@@ -5,12 +5,38 @@ import Layout from '../../layouts/Layout.astro';
 <Layout lang="es" title="Conectar Lumi con ChatGPT">
   <main class="oauth-shell">
     <section class="oauth-card" aria-labelledby="oauth-title">
-      <div class="brand">Lumi</div>
+      <div class="brand">
+        <img src="/favicon.svg" alt="" />
+        <span>Lumi</span>
+      </div>
       <h1 id="oauth-title">Conectar Lumi con ChatGPT</h1>
+      <p class="intro">
+        Accede con tu cuenta Lumi para usar orientación personalizada con los
+        perfiles que decidas compartir.
+      </p>
       <p id="status" class="status" role="status">Preparando autorización…</p>
 
       <form id="login-form" class="stack" hidden>
-        <p>Inicia sesión con tu cuenta Lumi para continuar.</p>
+        <div class="provider-list" aria-label="Opciones de inicio de sesión">
+          <button id="google-login" class="provider-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.33 2.98-7.41Z" />
+              <path fill="#34A853" d="M12 22c2.7 0 4.98-.9 6.63-2.43l-3.24-2.53c-.9.6-2.05.96-3.39.96-2.61 0-4.82-1.76-5.61-4.13H3.05v2.62A10 10 0 0 0 12 22Z" />
+              <path fill="#FBBC05" d="M6.39 13.87A6 6 0 0 1 6.08 12c0-.65.11-1.28.31-1.87V7.51H3.05A10 10 0 0 0 2 12c0 1.61.38 3.14 1.05 4.49l3.34-2.62Z" />
+              <path fill="#EA4335" d="M12 6c1.47 0 2.79.5 3.83 1.5l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.95 5.51l3.34 2.62C7.18 7.76 9.39 6 12 6Z" />
+            </svg>
+            Continuar con Google
+          </button>
+          <button id="apple-login" class="provider-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M17.05 12.54c-.03-3 2.45-4.46 2.56-4.53a5.5 5.5 0 0 0-4.33-2.34c-1.82-.19-3.59 1.09-4.52 1.09-.94 0-2.37-1.07-3.9-1.04a5.76 5.76 0 0 0-4.84 2.96c-2.1 3.64-.53 8.98 1.48 11.92 1 1.44 2.17 3.04 3.7 2.98 1.5-.06 2.06-.96 3.87-.96 1.79 0 2.32.96 3.88.93 1.61-.03 2.63-1.44 3.59-2.89a11.9 11.9 0 0 0 1.64-3.35 5.17 5.17 0 0 1-3.13-4.77ZM14.09 3.74A5.25 5.25 0 0 0 15.29 0a5.37 5.37 0 0 0-3.47 1.78 5 5 0 0 0-1.23 3.6 4.44 4.44 0 0 0 3.5-1.64Z" />
+            </svg>
+            Continuar con Apple
+          </button>
+        </div>
+
+        <div class="divider"><span>o continúa con tu correo</span></div>
+
         <label>
           Correo electrónico
           <input id="email" name="email" type="email" autocomplete="email" required />
@@ -19,7 +45,7 @@ import Layout from '../../layouts/Layout.astro';
           Contraseña
           <input id="password" name="password" type="password" autocomplete="current-password" required />
         </label>
-        <button type="submit">Iniciar sesión</button>
+        <button id="email-login" class="primary-button" type="submit">Iniciar sesión</button>
       </form>
 
       <div id="consent" class="stack" hidden>
@@ -33,8 +59,8 @@ import Layout from '../../layouts/Layout.astro';
           de tus bebés. Puedes revocar el acceso posteriormente.
         </p>
         <div class="actions">
-          <button id="deny" class="secondary" type="button">Cancelar</button>
-          <button id="approve" type="button">Permitir acceso</button>
+          <button id="deny" class="secondary-button" type="button">Cancelar</button>
+          <button id="approve" class="primary-button" type="button">Permitir acceso</button>
         </div>
       </div>
 
@@ -56,8 +82,12 @@ import Layout from '../../layouts/Layout.astro';
     const consent = document.querySelector('#consent');
     const clientName = document.querySelector('#client-name');
     const scopeList = document.querySelector('#scope-list');
+    const googleButton = document.querySelector('#google-login');
+    const appleButton = document.querySelector('#apple-login');
+    const emailButton = document.querySelector('#email-login');
     const approveButton = document.querySelector('#approve');
     const denyButton = document.querySelector('#deny');
+    const loginButtons = [googleButton, appleButton, emailButton];
 
     const showError = (message) => {
       errorBox.textContent = message;
@@ -65,8 +95,16 @@ import Layout from '../../layouts/Layout.astro';
       status.textContent = '';
     };
 
-    if (!supabaseUrl || !supabaseAnonKey || !authorizationId) {
-      showError('La solicitud de autorización no es válida o el entorno no está configurado.');
+    const setLoginBusy = (busy) => {
+      for (const button of loginButtons) {
+        button.disabled = busy;
+      }
+    };
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      showError('La autenticación de Lumi no está configurada en este entorno.');
+    } else if (!authorizationId) {
+      showError('Esta pantalla se abre al conectar Lumi desde ChatGPT. Inicia la conexión desde ChatGPT para continuar.');
     } else {
       const supabase = createClient(supabaseUrl, supabaseAnonKey, {
         auth: {
@@ -119,9 +157,35 @@ import Layout from '../../layouts/Layout.astro';
         consent.hidden = false;
       };
 
+      const signInWithProvider = async (provider) => {
+        errorBox.hidden = true;
+        setLoginBusy(true);
+        status.textContent = provider === 'google'
+          ? 'Conectando con Google…'
+          : 'Conectando con Apple…';
+
+        const redirectTo = new URL(window.location.href);
+        redirectTo.hash = '';
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: {
+            redirectTo: redirectTo.toString(),
+          },
+        });
+
+        if (error) {
+          setLoginBusy(false);
+          showError('No pudimos iniciar sesión con ese proveedor. Intenta nuevamente.');
+        }
+      };
+
+      googleButton.addEventListener('click', () => signInWithProvider('google'));
+      appleButton.addEventListener('click', () => signInWithProvider('apple'));
+
       loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         errorBox.hidden = true;
+        setLoginBusy(true);
         status.textContent = 'Iniciando sesión…';
         const form = new FormData(loginForm);
         const { error } = await supabase.auth.signInWithPassword({
@@ -129,6 +193,7 @@ import Layout from '../../layouts/Layout.astro';
           password: String(form.get('password') || ''),
         });
         if (error) {
+          setLoginBusy(false);
           showError('No pudimos iniciar sesión. Revisa tus credenciales.');
           return;
         }
@@ -178,8 +243,11 @@ import Layout from '../../layouts/Layout.astro';
 
 <style>
   :global(body) {
-    background: #f4f1ea;
-    color: #26362f;
+    background:
+      radial-gradient(circle at 12% 12%, rgb(217 98 94 / 18%), transparent 30%),
+      radial-gradient(circle at 88% 88%, rgb(123 165 242 / 22%), transparent 32%),
+      #f4f0e8;
+    color: #17233d;
     font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   }
 
@@ -189,40 +257,68 @@ import Layout from '../../layouts/Layout.astro';
     place-items: center;
     padding: 24px;
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
   }
 
   .oauth-card {
-    width: min(100%, 460px);
-    background: #fffdf8;
-    border: 1px solid #d8d3c8;
-    border-radius: 24px;
-    padding: 32px;
-    box-shadow: 0 20px 60px rgb(38 54 47 / 12%);
+    width: min(100%, 480px);
+    box-sizing: border-box;
+    background: rgb(255 255 255 / 94%);
+    border: 1px solid rgb(217 98 94 / 18%);
+    border-radius: 28px;
+    padding: clamp(24px, 5vw, 38px);
+    box-shadow: 0 24px 70px rgb(23 35 61 / 16%);
+    backdrop-filter: blur(18px);
   }
 
   .brand {
-    color: #3d715d;
-    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #d9625e;
+    font-size: 1.2rem;
     font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .brand img {
+    width: 34px;
+    height: 34px;
   }
 
   h1 {
-    margin: 10px 0 8px;
+    margin: 22px 0 10px;
     font-size: clamp(1.75rem, 5vw, 2.25rem);
-    line-height: 1.08;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  .intro {
+    margin: 0;
+    color: #4a5a72;
+    line-height: 1.55;
   }
 
   .status,
   .privacy-note {
-    color: #5f6c66;
+    color: #4a5a72;
+  }
+
+  .status {
+    min-height: 1.5em;
+    margin: 16px 0 0;
   }
 
   .stack {
     display: grid;
-    gap: 16px;
-    margin-top: 24px;
+    gap: 15px;
+    margin-top: 18px;
+  }
+
+  .provider-list {
+    display: grid;
+    gap: 10px;
   }
 
   label {
@@ -234,23 +330,67 @@ import Layout from '../../layouts/Layout.astro';
   input {
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid #b9c2bd;
-    border-radius: 12px;
-    padding: 12px 14px;
+    border: 1px solid #d7dce5;
+    border-radius: 14px;
+    padding: 13px 14px;
     background: white;
     color: inherit;
     font: inherit;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  input:focus {
+    border-color: #d9625e;
+    box-shadow: 0 0 0 4px rgb(217 98 94 / 13%);
   }
 
   button {
     border: 0;
-    border-radius: 999px;
+    min-height: 48px;
+    border-radius: 14px;
     padding: 12px 18px;
-    background: #356a55;
-    color: white;
     font: inherit;
     font-weight: 750;
     cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  }
+
+  button:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+
+  .provider-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    border: 1px solid #d7dce5;
+    background: white;
+    color: #17233d;
+  }
+
+  .provider-button:hover {
+    border-color: #b9c2d0;
+    box-shadow: 0 8px 20px rgb(23 35 61 / 8%);
+  }
+
+  .provider-button svg {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  .primary-button {
+    background: #d9625e;
+    color: white;
+    box-shadow: 0 8px 18px rgb(217 98 94 / 22%);
+  }
+
+  .primary-button:hover {
+    background: #c95350;
+    box-shadow: 0 12px 24px rgb(217 98 94 / 28%);
   }
 
   button:disabled {
@@ -258,15 +398,34 @@ import Layout from '../../layouts/Layout.astro';
     opacity: 0.55;
   }
 
-  button.secondary {
-    background: #e7e4dc;
-    color: #26362f;
+  .secondary-button {
+    border: 1px solid #d7dce5;
+    background: #f6f7fa;
+    color: #17233d;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6a778c;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: #e2e5eb;
   }
 
   .permission {
     padding: 16px;
     border-radius: 16px;
-    background: #eef4ef;
+    background: #f7f1ef;
+    border: 1px solid rgb(217 98 94 / 12%);
   }
 
   .permission ul {
@@ -281,19 +440,37 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .error {
-    color: #912c2c;
-    background: #fcecec;
-    border-radius: 12px;
-    padding: 12px;
+    color: #8f2f2c;
+    background: #fff0ef;
+    border: 1px solid rgb(217 98 94 / 22%);
+    border-radius: 14px;
+    padding: 13px 14px;
   }
 
   .privacy-link {
     display: inline-block;
     margin-top: 24px;
-    color: #356a55;
+    color: #b74744;
+    font-weight: 650;
+    text-underline-offset: 3px;
   }
 
   [hidden] {
     display: none !important;
+  }
+
+  @media (max-width: 520px) {
+    .oauth-shell {
+      padding: 14px;
+    }
+
+    .oauth-card {
+      border-radius: 22px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 </style>
